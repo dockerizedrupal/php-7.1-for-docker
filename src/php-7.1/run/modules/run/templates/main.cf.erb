@@ -1,0 +1,23 @@
+smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+biff = no
+append_dot_mydomain = no
+readme_directory = no
+
+myhostname = <%= @server_name %>
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+mydestination = localhost
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+
+<% if @smtp_host and !@smtp_host.empty? %>
+relayhost = <%= @smtp_host %>:<%= @smtp_port %>
+<% end %>
+
+<% if @smtp_username and !@smtp_username.empty? and @smtp_password and !@smtp_password.empty? %>
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps=static:<%= @smtp_username %>:<%= @smtp_password %>
+smtp_sasl_security_options =
+<% end %>
